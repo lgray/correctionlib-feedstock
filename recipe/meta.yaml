@@ -11,7 +11,7 @@ source:
   sha256: e4d240cbdb2633a8955ddcd02d5b9bfb33d7e1a33554d6f7957f2dec56988a67
 
 build:
-  number: 0
+  number: 1
   entry_points:
     - correction = correctionlib.cli:main
   script:
