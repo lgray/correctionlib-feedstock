@@ -18,8 +18,7 @@ bash $MINIFORGE_FILE -b -p ${MINIFORGE_HOME}
 
 ( startgroup "Configuring conda" ) 2> /dev/null
 
-GET_BOA=boa
-BUILD_CMD=mambabuild
+BUILD_CMD=build
 
 source ${MINIFORGE_HOME}/etc/profile.d/conda.sh
 conda activate base
@@ -54,6 +53,10 @@ source run_conda_forge_build_setup
 
 echo -e "\n\nMaking the build clobber file"
 make_build_number ./ ./recipe ./.ci_support/${CONFIG}.yaml
+
+if [[ "${HOST_PLATFORM}" != "${BUILD_PLATFORM}" ]]; then
+    EXTRA_CB_OPTIONS="${EXTRA_CB_OPTIONS:-} --no-test"
+fi
 
 conda $BUILD_CMD ./recipe -m ./.ci_support/${CONFIG}.yaml --suppress-variables --clobber-file ./.ci_support/clobber_${CONFIG}.yaml ${EXTRA_CB_OPTIONS:-}
 ( startgroup "Validating outputs" ) 2> /dev/null
